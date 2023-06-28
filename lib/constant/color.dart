@@ -1,5 +1,6 @@
- import 'dart:ui';
 
-import 'package:flutter/material.dart';
+
+ import 'package:flutter/material.dart';
 
 Color redColor = Colors.red;
+Color goldenColor = const Color(0xffFEEAD1);

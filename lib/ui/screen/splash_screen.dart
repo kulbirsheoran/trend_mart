@@ -1,21 +1,42 @@
 import 'package:emartapp/constant/color.dart';
 import 'package:emartapp/constant/string.dart';
-import 'package:emartapp/widget/app_logo.dart';
+import 'package:emartapp/ui/screen/login_screen.dart';
+import 'package:emartapp/widget/applogo_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+ void changeScreen(){
+    Future.delayed(const Duration(seconds: 3),(){
+      Get.to(() => const LoginScreen());
+    });
+  }
+
+  @override
+ void initState() {
+    // TODO: implement initState
+    changeScreen();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: redColor,
       body: Center(
         child: Column(
           children: [
-            // Image.asset('assets/images/splashlogo.jpg',
-            //    width: 300, alignment: Alignment.topLeft),
+            // 50.heightBox,
+            //  Image.asset('assets/images/bgsplashlogo.jpg',fit: BoxFit.cover,
+            //   alignment: Alignment.topLeft),
          300.heightBox,
             appLogoWidget(),
             10.heightBox,
