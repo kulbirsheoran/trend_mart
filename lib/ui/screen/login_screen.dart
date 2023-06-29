@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:emartapp/constant/color.dart';
 import 'package:emartapp/constant/list.dart';
 import 'package:emartapp/constant/string.dart';
+import 'package:emartapp/ui/screen/home.dart';
 import 'package:emartapp/ui/screen/sign_up_screen.dart';
 import 'package:emartapp/widget/applogo_widget.dart';
 import 'package:emartapp/widget/button.dart';
@@ -57,7 +58,9 @@ class LoginScreen extends StatelessWidget {
                     Color: Colors.redAccent,
                     title: login,
                     textColor: Colors.white,
-                    onPress: (){},
+                    onPress: (){
+                      Get.to(()=>Home());
+                    },
                   ).box.width(context.screenWidth - 50).make(),
                   5.heightBox,
                   createNewAccount.text.color(Colors.grey).make(),
@@ -67,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                     textColor: Colors.red,
                     title: signup,
                   onPress: (){
-                      //Get.to(()=>SignUp());
+                      Get.to(()=>const SignUp());
                   }
                   )
                   .box.width(context.screenWidth - 50).make(),

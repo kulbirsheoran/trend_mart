@@ -9,8 +9,21 @@ const String forgotpassword ='Forgot Password';
 const String confirmpassword ='Confirm Password';
 const String name ='Name';
 const String namehint ='Name';
-
 const String login ='Log in';
 const String signup ='Sign up';
 const String createNewAccount ='create a new account';
 const String loginwith ='Log in with';
+const String privacypolicy =' &  Privacy Policy';
+const String termAndCondition =' Term and Condition';
+const String alreadyHaveAccount =' Already have an account?';
+const String home ='Home';
+const String categories ='Categories';
+const String cart ='Cart';
+const String account ='Account';
+const String searchanything ='Search anything...';
+const String todaydeal ='Today deal';
+const String flashSale ='Flash Sale';
+const String topSellers ='Top Sellers';
+const String topCategories ='Top Categories';
+const String featureCategories ='Feature Categories';
+
