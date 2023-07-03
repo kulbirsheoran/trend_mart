@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:emartapp/constant/color.dart';
 import 'package:emartapp/constant/list.dart';
 import 'package:emartapp/constant/string.dart';
+import 'package:emartapp/controller/auth_controller.dart';
 import 'package:emartapp/widget/applogo_widget.dart';
 import 'package:emartapp/widget/button.dart';
 import 'package:emartapp/widget/custom_textfield.dart';
@@ -14,8 +15,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
 
+
+   SignUp({Key? key}) : super(key: key);
+  bool? isCheck = false;
+  var controller = Get.put(AuthController());
   @override
   State<SignUp> createState() => _SignUpState();
 }

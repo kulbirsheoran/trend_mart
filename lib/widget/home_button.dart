@@ -1,13 +1,13 @@
-import 'package:emartapp/constant/string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-Widget HomeButton(){
+Widget homeButton({width,height,icon,String? title,onPress, }){
   return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Image.asset('assets/images/todayDeal.jpg',width: 50,),
+     icon, // image
       5.heightBox,
-      todaydeal.text.fontWeight(FontWeight.bold).color(CupertinoColors.black).make(),
+      title!.text.make(),
     ],
-  ).box.rounded.white.make();
+  ).box.rounded.white.size(width,height).make().card.rounded.make().onTap(onPress);
 }

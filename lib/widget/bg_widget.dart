@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-  Widget bgWidget(BuildContext context) {
+  Widget bgWidget(BuildContext context, {required child}) {
   return Container(
     height: MediaQuery.of(context).size.height*0.3,
     decoration:  const BoxDecoration(
