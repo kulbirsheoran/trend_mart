@@ -3,13 +3,14 @@ import 'package:emartapp/constant/string.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-Widget customTextField({String? title,String? hint,controller}){
+Widget customTextField({String? title,String? hint,controller,isPass}){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       title!.text.color(redColor).fontWeight(FontWeight.bold).make(),
      5.heightBox,
-      TextFormField(
+      TextFormField(controller: controller,
+        obscureText: isPass,
         decoration: InputDecoration(
           hintStyle: const TextStyle(
             fontWeight: FontWeight.bold,

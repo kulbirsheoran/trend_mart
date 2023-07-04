@@ -56,6 +56,8 @@ const String supportpolicy ='Sport Policy';
 const String whislist ='My Wishlist';
 const String orders ='My Order';
 const String messages ='Sport Policy';
+const String loggedIn ='Log In Successfully';
+const String loggedOut =' Log Out Successfully';
 
 
 

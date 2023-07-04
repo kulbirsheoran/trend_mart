@@ -1,15 +1,12 @@
-import 'dart:async';
-
 import 'package:emartapp/constant/color.dart';
 import 'package:emartapp/constant/list.dart';
 import 'package:emartapp/constant/string.dart';
+import 'package:emartapp/controller/auth_controller.dart';
 import 'package:emartapp/ui/screen/home.dart';
 import 'package:emartapp/ui/screen/sign_up_screen.dart';
 import 'package:emartapp/widget/applogo_widget.dart';
 import 'package:emartapp/widget/button.dart';
 import 'package:emartapp/widget/custom_textfield.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -19,23 +16,22 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(AuthController());
     return Scaffold(
       body: Stack(
         children: [
           Column(
             children: [
-              Container(
-                child: Column(
-                  children: [
-                    appLogoWidget()
-                    .centered()
-                        .box
-                        .color(redColor)
-                        .size(MediaQuery.of(context).size.width,
-                            MediaQuery.of(context).size.height / 3)
-                        .make(),
-                  ],
-                ),
+              Column(
+                children: [
+                  appLogoWidget()
+                  .centered()
+                      .box
+                      .color(redColor)
+                      .size(MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height / 3)
+                      .make(),
+                ],
               ),
             ],
           ),
@@ -46,9 +42,9 @@ class LoginScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  customTextField(hint: emailHint,title: email),
+                  customTextField(hint: emailHint,title: email,isPass: false,controller: controller.emailController),
                   5.heightBox,
-                  customTextField(hint: passwordHint, title: password),
+                  customTextField(hint: passwordHint, title: password,isPass: true,controller: controller.passwordController),
                   Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
@@ -58,8 +54,14 @@ class LoginScreen extends StatelessWidget {
                     Color: Colors.redAccent,
                     title: login,
                     textColor: Colors.white,
-                    onPress: (){
-                      Get.to(()=>Home());
+                    onPress: () async {
+                      await controller.loginMethod(context: context).then((value){
+                       if(value!= null){
+                         VxToast.show(context, msg: loggedIn);
+                         Get.offAll(()=>const Home());
+                       }
+                      } );
+                     // Get.to(()=>Home());
                     },
                   ).box.width(context.screenWidth - 50).make(),
                   5.heightBox,

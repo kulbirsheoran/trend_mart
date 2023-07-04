@@ -1,9 +1,13 @@
 import 'package:emartapp/constant/color.dart';
 import 'package:emartapp/constant/list.dart';
+import 'package:emartapp/controller/auth_controller.dart';
 import 'package:emartapp/ui/screen/bottom_tabbar_screen/profile_screen.dart';
+import 'package:emartapp/ui/screen/login_screen.dart';
 import 'package:emartapp/widget/bg_widget.dart';
 import 'package:emartapp/widget/profile_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class AccountScreeen extends StatelessWidget {
@@ -64,7 +68,10 @@ class AccountScreeen extends StatelessWidget {
                       OutlinedButton(
                           style: OutlinedButton.styleFrom(
                               side: BorderSide(color: Colors.white)),
-                          onPressed: () {},
+                          onPressed: () async{
+                            await Get.put(AuthController().signOutMethod(context));
+                            Get.offAll(LoginScreen());
+                          },
                           child: 'Log out'.text.white.make())
                     ],
                   ),
