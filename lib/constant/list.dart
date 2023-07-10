@@ -50,12 +50,12 @@ var itemDetails =[
   video,privacypolicy,review,returnpolicy,supportpolicy
 ];
 var profileButtonList=[
-  whislist, orders,messages
+   orders,whislist,messages
 ];
- var profilebuttonicon = <Icon> [
+ List<Icon> profileButtonIcon = [
 
-  Icon (Icons.cake,),
-  Icon (Icons.mail),
-  Icon (Icons.policy_outlined,),
+  const Icon (Icons.cake,),
+  const Icon (Icons.mail),
+  const Icon (Icons.policy_outlined,),
 
 ];

@@ -40,7 +40,7 @@ class LoginScreen extends StatelessWidget {
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              child: Column(
+             child: Obx(()=> Column(
                 children: [
                   customTextField(hint: emailHint,title: email,isPass: false,controller: controller.emailController),
                   5.heightBox,
@@ -50,19 +50,34 @@ class LoginScreen extends StatelessWidget {
                       child: TextButton(
                           onPressed: () {}, child: forgotpassword.text.make())),
                   5.heightBox,
+                  controller.isLoading.value ? const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Colors.red),
+                  ):
                   Button(
+
                     Color: Colors.redAccent,
                     title: login,
                     textColor: Colors.white,
                     onPress: () async {
                       await controller.loginMethod(context: context).then((value){
-                       if(value!= null){
-                         VxToast.show(context, msg: loggedIn);
-                         Get.offAll(()=>const Home());
-                       }
-                      } );
-                     // Get.to(()=>Home());
-                    },
+                        if(value!=null){
+                          VxToast.show(context, msg: loggedIn);
+                          Get.off(()=>Home());
+                        }
+                      });
+                    }
+                    //   controller.isLoading(true);
+                    //   await controller.loginMethod(context: context).then((value){
+                    //
+                    //    if(value!= null){
+                    //      VxToast.show(context, msg: loggedIn);
+                    //      Get.offAll(()=>const Home());
+                    //    }else{
+                    //      controller.isLoading(false);
+                    //    }
+                    //   } );
+                    //  // Get.to(()=>Home());
+                    // },
                   ).box.width(context.screenWidth - 50).make(),
                   5.heightBox,
                   createNewAccount.text.color(Colors.grey).make(),
@@ -87,7 +102,7 @@ class LoginScreen extends StatelessWidget {
 
                   )
                 ],
-              ).box.white.rounded.padding(EdgeInsets.all(16)).shadow2xl.make(),
+              ),).box.white.rounded.padding(EdgeInsets.all(16)).shadow2xl.make(),
             ),
           )
         ],

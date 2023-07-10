@@ -7,6 +7,7 @@ import 'package:emartapp/constant/string.dart';
 import 'package:emartapp/controller/auth_controller.dart';
 import 'package:emartapp/ui/screen/bottom_tabbar_screen/home_screen.dart';
 import 'package:emartapp/ui/screen/home.dart';
+import 'package:emartapp/ui/screen/login_screen.dart';
 import 'package:emartapp/widget/applogo_widget.dart';
 import 'package:emartapp/widget/button.dart';
 import 'package:emartapp/widget/custom_textfield.dart';
@@ -77,7 +78,7 @@ class _SignUpState extends State<SignUp> {
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              child: Column(
+             child: Obx(()=> Column(
                 children: [
                   customTextField(
                       hint: namehint, title: name, controller: nameController,isPass: false),
@@ -137,29 +138,12 @@ class _SignUpState extends State<SignUp> {
                   ),
                   5.heightBox.box.width(context.screenWidth - 50).make(),
                   5.heightBox,
-                  Button(
+                  controller.isLoading.value?CircularProgressIndicator(): Button(
                       Color: isCheck == true ? Colors.red : greyColor,
                       title: signup,
                       textColor: Colors.white,
                       onPress: () async {
-                        if (isCheck != false) {
-                          try {
-                            await controller.signUpMethod(context: context,
-                                email: emailController.text,
-                                password: passwordController.text).then(
-                                    (value) {
-                                  return controller.storeUserData(
-                                  nameController.text,passwordController.text, emailController.text
-                                    );
-                                }).then((value){
-                                  VxToast.show(context, msg: loggedIn);
-                                  Get.offAll(const Home());
-                            });
-                          } catch (e) {
-                          auth.signOut();
-                        //  VxToast.show(context, msg: e.toString());
-                          }
-                        }
+                        await signUp(context);
                       })
                       .box
                       .width(context.screenWidth - 50)
@@ -186,7 +170,7 @@ class _SignUpState extends State<SignUp> {
                     Get.back();
                   })
                 ],
-              ).box.white.rounded
+              ),).box.white.rounded
                   .padding(EdgeInsets.all(16))
                   .shadow2xl
                   .make(),
@@ -195,5 +179,29 @@ class _SignUpState extends State<SignUp> {
         ],
       ),
     );
+  }
+
+  Future<void> signUp(BuildContext context) async {
+     controller.isLoading(true);
+    if (isCheck != false) {
+      try {
+        await controller.signUpMethod(context: context,
+            email: emailController.text,
+            password: passwordController.text).then(
+                (value) {
+              return controller.storeUserData(
+              nameController.text,passwordController.text, emailController.text,imgUrl
+                );
+            }).then((value){
+              VxToast.show(context, msg: loggedIn);
+              Get.offAll(const LoginScreen());
+        });
+      } catch (e) {
+
+      auth.signOut();
+      VxToast.show(context, msg: e.toString());
+      controller.isLoading(false);
+      }
+    }
   }
 }

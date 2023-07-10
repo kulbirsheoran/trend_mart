@@ -1,27 +1,58 @@
-import 'package:emartapp/constant/color.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:emartapp/constant/firebase_const.dart';
 import 'package:emartapp/constant/list.dart';
 import 'package:emartapp/controller/auth_controller.dart';
-import 'package:emartapp/ui/screen/bottom_tabbar_screen/profile_screen.dart';
+import 'package:emartapp/controller/profile_controller.dart';
+import 'package:emartapp/service/firestore_service.dart';
+import 'package:emartapp/ui/screen/bottom_tabbar_screen/profile_edit.dart';
 import 'package:emartapp/ui/screen/login_screen.dart';
-import 'package:emartapp/widget/bg_widget.dart';
-import 'package:emartapp/widget/profile_widget.dart';
+import 'package:emartapp/widget/details_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class AccountScreeen extends StatelessWidget {
-  const AccountScreeen({Key? key}) : super(key: key);
+class AccountScreen extends StatelessWidget {
+  const AccountScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(ProfileController());
+   // print("KulluTag userId ${auth.currentUser!.uid}");
     return Scaffold(
-      backgroundColor: Vx.white,
-      body: SafeArea(
+        backgroundColor: Vx.white,
+        body: Column(
+          children: [
+            StreamBuilder(
+              stream: FireStoreServices.getUser(auth.currentUser!.uid),
+              builder:
+                  (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.hasData && (snapshot.data?.exists ?? false)) {
+                      DocumentSnapshot document = snapshot.data!;
+                      // Access the document's data
+                      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                      return body(context,controller,data);
+
+                    } else if (snapshot.hasData && !(snapshot.data?.exists??false)) {
+                      return const Center(child: Text('Document does not exist'));
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+              },
+            ),
+
+          ],
+        ));
+  }
+
+  SafeArea body(BuildContext context, ProfileController controller, user) {
+    return
+      SafeArea(
         child: Stack(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.35,
               color: Colors.red,
             ),
             Align(
@@ -29,71 +60,81 @@ class AccountScreeen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(alignment: Alignment.topRight,
-                      child: Icon(Icons.edit,color: Colors.white,)),
+                  Align(
+                      alignment: Alignment.topRight,
+                      child: const Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ).onTap(() {
+                  //      controller.changeImage(context);
+                       controller.nameController.text = user!['name'];
+                   //  controller.passController.text = user!['password'];
+                        Get.to(() =>  ProfileEdit(user: user,));
+                      })),
                   Row(
                     children: [
-                      const CircleAvatar(
-                        radius: 30, // Adjust the radius as needed
-                        backgroundImage:
-                            AssetImage('assets/images/kidsclothe.jpg'),
-                        // Replace with your image asset path
-                      ),
-                      const Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                     user['imageUrl'] == '' ?
+                    Image.asset('assets/images/kidsclothe.jpg',width: 100,fit: BoxFit.cover,).box.roundedFull.clip(Clip.antiAlias).make()
 
-                            children: [
-                              Text(
-                                'kl Sheoran',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                    : Image.network(user['imageUrl'],width: 100,fit: BoxFit.cover,).box.roundedFull.clip(Clip.antiAlias).make() ,
+
+                        Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                             Text(
+                               '${user['name']}',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                              Text(
-                                'kl@gmail.com',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
+                            ),
+                            Text(
+                             '${user['email']}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: Colors.white)),
-                          onPressed: () async{
-                            await Get.put(AuthController().signOutMethod(context));
-                            Get.offAll(LoginScreen());
-                          },
-                          child: 'Log out'.text.white.make())
                     ],
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        detailsCard(count: '00',title: 'In your cart',width: context.screenWidth/3.4),
-                        detailsCard(count: '47',title: 'In your wishlist',width: context.screenWidth/3.4),
-                        detailsCard(count: '238',title: 'yours orders',width: context.screenWidth/3.4),
+                        detailsCard(
+                            count:user['cart_count'],
+                            title: 'your cart',
+                            width: context.screenWidth / 3.4),
+                        detailsCard(
+                            count: user['wishlist_count'],
+                            title: 'your wishlist',
+                            width: context.screenWidth / 3.4),
+                        detailsCard(
+                            count: user['order_count'],
+                            title: 'yours orders',
+                            width: context.screenWidth / 3.4),
                       ],
                     ),
                   ),
                   20.heightBox,
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: profileButtonList.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: profileButtonList[index].text.fontWeight(FontWeight.bold).make(),
-                        trailing: profilebuttonicon[index]
+                         title: profileButtonList[index]
+                              .text
+                              .fontWeight(FontWeight.bold)
+                              .make(),
+                         trailing: profileButtonIcon[index]
                       );
                     },
                   ).box.rounded.white.make(),
@@ -102,7 +143,6 @@ class AccountScreeen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
-}
+ }

@@ -58,6 +58,9 @@ const String orders ='My Order';
 const String messages ='Sport Policy';
 const String loggedIn ='Log In Successfully';
 const String loggedOut =' Log Out Successfully';
+const String imgUrl ='';
+const String oldpass ='Old password';
+const String newpass ='New password';
 
 
 

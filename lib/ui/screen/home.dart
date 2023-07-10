@@ -31,7 +31,7 @@ class Home extends StatelessWidget {
       HomeScreen(),
       CategoryScreen(),
       CartScreen(),
-      AccountScreeen()
+      const AccountScreen()
     ];
     return WillPopScope( onWillPop: ()async{
       showDialog(barrierDismissible: false,
