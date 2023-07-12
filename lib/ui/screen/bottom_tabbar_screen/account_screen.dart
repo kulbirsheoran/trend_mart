@@ -70,7 +70,10 @@ class AccountScreen extends StatelessWidget {
                        controller.nameController.text = user!['name'];
                    //  controller.passController.text = user!['password'];
                         Get.to(() =>  ProfileEdit(user: user,));
-                      })),
+                      }
+
+                      )),
+
                   Row(
                     children: [
                      user['imageUrl'] == '' ?
@@ -98,9 +101,18 @@ class AccountScreen extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
+
                           ],
                         ),
-                      ),
+                      ),OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: Colors.white)),
+                          onPressed: () async {
+                            await Get.put(
+                                AuthController().signOutMethod(context));
+                            Get.offAll(LoginScreen());
+                          },
+                          child: 'Log out'.text.white.make()),
                     ],
                   ),
                   Padding(

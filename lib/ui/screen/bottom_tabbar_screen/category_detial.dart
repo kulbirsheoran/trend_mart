@@ -97,7 +97,11 @@ class CategoryDetail extends StatelessWidget {
                               ],
                             ),
                           ).onTap(() {
-                            Get.to(()=>ItemDetail(title:'${products[index]['p_name']}',user: products[index]));
+                            controller.checkIfFav(products[index]);
+                            Get.to(
+
+                                    ()=>ItemDetail(
+                                        title:'${products[index]['p_name']}',user: products[index]));
                           });
                         }),
                   ),
