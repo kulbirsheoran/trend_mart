@@ -59,3 +59,12 @@ var profileButtonList=[
   const Icon (Icons.policy_outlined,),
 
 ];
+ const paymentMethodImg =[
+   'assets/images/cod1.png',
+   'assets/images/paypal.png',
+   'assets/images/phonepe.png',
+ ];
+
+ const paymentMethods=[
+   cod,paypal,phonepe
+ ];

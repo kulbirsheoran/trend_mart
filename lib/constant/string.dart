@@ -62,6 +62,8 @@ const String imgUrl ='';
 const String oldpass ='Old password';
 const String newpass ='New password';
 
-
+const paypal = 'Paypal';
+const phonepe = 'PhonePe';
+const cod = 'Cash on delivery';
 
 

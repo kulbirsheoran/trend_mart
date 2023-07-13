@@ -71,6 +71,7 @@ class ProductController extends GetxController {
   var totalPrice = 0.obs;
   var isFav = false.obs;
 
+
   getSubCategories(title) async {
     subcategory.clear();
     var user = await rootBundle.loadString("lib/service/category_model.json");
@@ -102,7 +103,7 @@ class ProductController extends GetxController {
     totalPrice.value = price * quantity.value;
   }
 
-  addToCart({title, img, sellerName, color, qty, tprice, context}) async {
+  addToCart({title, img, sellerName, color, qty, tprice,vendorId, context}) async {
     await fireStore.collection(cartCollection).doc().set({
       'titel': title,
       'img': img,
@@ -110,6 +111,7 @@ class ProductController extends GetxController {
       'color': color,
       'qty': qty,
       'tprice': tprice,
+      'vendor_id':vendorId,
       'added_by': auth.currentUser!.uid
     }).catchError((error) {
       VxToast.show(context, msg: error.toString());
@@ -148,4 +150,5 @@ class ProductController extends GetxController {
    }
 
   }
+
 }

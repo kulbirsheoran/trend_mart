@@ -44,14 +44,14 @@ class ItemDetail extends StatelessWidget {
             Obx(()=>
                IconButton(
                 onPressed: () {
-if(controller.isFav.value){
-  controller.removeFromWishlist(user.id,context);
-  controller.isFav(false);
-}
-else{
-   controller.addToWishlist(user.id,context);
-   controller.isFav(true);
-}
+                  if(controller.isFav.value){
+                    controller.removeFromWishlist(user.id,context);
+                     controller.isFav(false);
+                   }
+                  else{
+               controller.addToWishlist(user.id,context);
+                 controller.isFav(true);
+                }
 
 
                 },
@@ -343,6 +343,7 @@ else{
                   color: user['p_colors'][controller.colorIndex.value],
                   context: context,
                     img: user['p_imgs'][0],
+                    vendorId: user['vendor_id'],
                     qty: controller.quantity.value,
                     sellerName: user['p_seller'],
                     title: user["p_name"],

@@ -36,7 +36,7 @@ class CartScreen extends StatelessWidget {
       body: StreamBuilder(
         stream: FireStoreServices.getCart(currentUser!.uid),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          print("DineshTag cartScreen userId ${currentUser!.uid}");
+         // print("DineshTag cartScreen userId ${currentUser!.uid}");
           if (!snapshot.hasData) {
             return Center(
               child: loadingIndicator(),
@@ -48,6 +48,7 @@ class CartScreen extends StatelessWidget {
           } else {
             var data = snapshot.data!.docs;
             controller.calculate(data);
+            controller.productSnapshot = data;
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column( 
@@ -57,7 +58,10 @@ class CartScreen extends StatelessWidget {
                         itemCount: data.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ListTile(
-                            leading: Image.network('${data[index]['img']}'),
+                            leading: Image.network('${data[index]['img']}',
+                            width: 100,
+                              fit: BoxFit.fill,
+                            ),
                             title:
                                 '${data[index]['titel']} (${data[index]['qty']})'.text.size(16).make(),
                             subtitle: '${data[index]['tprice']}'.text.make(),
