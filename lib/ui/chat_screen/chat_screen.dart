@@ -76,7 +76,7 @@ class ChatScreen extends StatelessWidget {
                       controller.sendMsg(controller.msgController.text);
                       controller.msgController.clear();
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.send,
                       color: Colors.yellow,
                     ))
@@ -84,8 +84,8 @@ class ChatScreen extends StatelessWidget {
             )
                 .box
                 .height(80)
-                .padding(EdgeInsets.all(12))
-                .margin(EdgeInsets.only(bottom: 8))
+                .padding(const EdgeInsets.all(12))
+                .margin(const EdgeInsets.only(bottom: 8))
                 .make()
           ],
         ),

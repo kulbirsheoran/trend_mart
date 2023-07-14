@@ -337,8 +337,7 @@ class ItemDetail extends StatelessWidget {
               //   title: user["p_name"],
               //   tprice: controller.totalPrice.value );
 
-              if(user['p_colors'] != null &&
-              controller.colorIndex.value<user['p_colors'].length){
+              if(controller.quantity.value>0){
                 controller.addToCart(
                   color: user['p_colors'][controller.colorIndex.value],
                   context: context,
@@ -352,7 +351,8 @@ class ItemDetail extends StatelessWidget {
                 VxToast.show(context,msg:'Added to cart');
 
               }else{
-                print('Invalid color index or null  ${user['p_colors']}');
+                VxToast.show(context, msg: 'Quality can\t be o');
+                // print('Invalid color index or null  ${user['p_colors']}');
               }
 
 

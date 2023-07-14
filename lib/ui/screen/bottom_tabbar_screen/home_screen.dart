@@ -1,9 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emartapp/constant/color.dart';
 import 'package:emartapp/constant/list.dart';
 import 'package:emartapp/constant/string.dart';
+import 'package:emartapp/service/firestore_service.dart';
+import 'package:emartapp/ui/screen/bottom_tabbar_screen/item_detail.dart';
 import 'package:emartapp/widget/featured_button.dart';
 import 'package:emartapp/widget/home_button.dart';
+import 'package:emartapp/widget/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -190,38 +196,63 @@ class HomeScreen extends StatelessWidget {
                         10.heightBox,
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: List.generate(
-                                6,
-                                (index) => Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/buylaptop.jpg',
-                                          fit: BoxFit.fill,
-                                        ),
-                                        10.heightBox,
-                                        'Hp G3 EliteBook'
-                                            .text
-                                            .black
-                                            .fontWeight(FontWeight.bold)
-                                            .make(),
-                                        10.heightBox,
-                                        'Price 31000/'
-                                            .text
-                                            .fontWeight(FontWeight.bold)
-                                            .red500
-                                            .make(),
-                                      ],
-                                    )
-                                        .box
-                                        .white
-                                        .roundedSM
-                                        .padding(const EdgeInsets.all(8))
-                                        .margin(
-                                            EdgeInsets.symmetric(horizontal: 4))
-                                        .make()),
+                          child: FutureBuilder(
+                          future: FireStoreServices.getFeaturedProducts(),
+                            builder: (context,AsyncSnapshot<QuerySnapshot>snapshot) {
+                           if(!snapshot.hasData){
+                           return Center(
+                             child: loadingIndicator(),
+                           );
+
+                           }else if(snapshot.data!.docs.isEmpty){
+
+                             return 'No featured product'.text.makeCentered();
+                           }else {
+                             var featuredData = snapshot.data!.docs;
+                             return Row(
+                               children: List.generate(
+                                   featuredData.length,
+                                       (index) =>
+                                       Column(
+                                         crossAxisAlignment:
+                                         CrossAxisAlignment.start,
+                                         children: [
+                                           Image.network(
+                                             featuredData[index]['p_imgs'][1],
+                                             //'assets/images/buylaptop.jpg',
+                                             fit: BoxFit.cover,
+                                           ),
+                                           10.heightBox,
+                                           featuredData[index]['p_name'].toString()
+                                               .text
+                                               .black
+                                               .fontWeight(FontWeight.bold)
+                                               .make(),
+                                           10.heightBox,
+                                           '${featuredData[index]['p_price']}'.numCurrency
+                                               .text
+                                               .fontWeight(FontWeight.bold)
+                                               .red500
+                                               .make(),
+                                         ],
+                                       )
+                                           .box
+                                           .white
+                                           .roundedSM
+                                           .padding(const EdgeInsets.all(8))
+                                           .margin(
+                                           EdgeInsets.symmetric(horizontal: 4))
+                                           .make().onTap(() { 
+                                             Get.to(()=>ItemDetail(
+                                                title: '${featuredData[index]['p_name']}',
+                                               user: featuredData[index],
+                                             ));
+                                       })
+                               )
+                               ,
+                             );
+                           }
+                            }
                           ),
                         )
                       ],
@@ -244,36 +275,80 @@ class HomeScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(color: Colors.grey,
-                      child: GridView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 6,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 8,
-                              crossAxisSpacing: 8,
-                              mainAxisExtent: 300),
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/applephone.jpg',
-                                  width: 200,
-                                  height: 200,
-                                  fit: BoxFit.fill,
-                                ),
-                                Text("Apple iPhone 14 Pro Max").box.alignCenterLeft.white.make(),
-                                10.heightBox,
-                                Row(
+                      child: StreamBuilder(
+                        stream: FireStoreServices.allproducts(),
+                        builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
+                        if(!snapshot.hasData){
+                          return loadingIndicator();
+                        }else{
+                          var allproduct = snapshot.data!.docs;
+                        return  GridView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: allproduct.length,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 8,
+                                  crossAxisSpacing: 8,
+                                  mainAxisExtent: 300),
+                              itemBuilder: (context, index) {
+                                return Column(
                                   children: [
-                                    Text('Price'),
-                                    5.widthBox,
-                                    Text('67599/',style: TextStyle(fontWeight: FontWeight.bold),),
+                                    Image.network(
+                                      allproduct[index]['p_imgs'][0],
+                                      //'assets/images/applephone.jpg',
+                                      width: 200,
+                                      height: 200,
+                                      fit: BoxFit.fill,
+                                    ),
+                                    '${allproduct[index]['p_name']}'.text.make(),
+                                    10.heightBox,
+                                    Row(
+                                      children: [
+                                        Text('Price'),
+                                        5.widthBox,
+                                        //Text('67599/',style: TextStyle(fontWeight: FontWeight.bold),),
+                                        '${allproduct[index]['p_price']}'.text.make()
+                                      ],
+                                    )
                                   ],
-                                )
-                              ],
-                            ).box.white.make();
-                          }),
+                                ).box.white.make().onTap(() { 
+                                  Get.to(()=>ItemDetail(title: '${allproduct[index]['p_name']}',user:allproduct[index],));
+                                });
+                              });
+                        }
+                        }
+                      ),
+                      // child: GridView.builder(
+                      //     physics: NeverScrollableScrollPhysics(),
+                      //     shrinkWrap: true,
+                      //     itemCount: 6,
+                      //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      //         crossAxisCount: 2,
+                      //         mainAxisSpacing: 8,
+                      //         crossAxisSpacing: 8,
+                      //         mainAxisExtent: 300),
+                      //     itemBuilder: (context, index) {
+                      //       return Column(
+                      //         children: [
+                      //           Image.asset(
+                      //             'assets/images/applephone.jpg',
+                      //             width: 200,
+                      //             height: 200,
+                      //             fit: BoxFit.fill,
+                      //           ),
+                      //           Text("Apple iPhone 14 Pro Max").box.alignCenterLeft.white.make(),
+                      //           10.heightBox,
+                      //           Row(
+                      //             children: [
+                      //               Text('Price'),
+                      //               5.widthBox,
+                      //               Text('67599/',style: TextStyle(fontWeight: FontWeight.bold),),
+                      //             ],
+                      //           )
+                      //         ],
+                      //       ).box.white.make();
+                      //     }),
                     ),
                   )
                 ],

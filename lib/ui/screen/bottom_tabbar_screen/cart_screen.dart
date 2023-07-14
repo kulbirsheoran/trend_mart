@@ -98,15 +98,7 @@ class CartScreen extends StatelessWidget {
                       .color(goldenColor)
                       .make(),
                   10.heightBox,
-                  // SizedBox(
-                  //   width: context.screenWidth - 60,
-                  //   child: Button(
-                  //     Color: Colors.red,
-                  //     onPress: () {},
-                  //     textColor: Colors.white,
-                  //     title: 'Proceed to shipping',
-                  //   ),
-                  // )
+
                 ],
               ),
             );

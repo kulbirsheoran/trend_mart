@@ -4,9 +4,13 @@ import 'package:emartapp/constant/list.dart';
 import 'package:emartapp/controller/auth_controller.dart';
 import 'package:emartapp/controller/profile_controller.dart';
 import 'package:emartapp/service/firestore_service.dart';
+import 'package:emartapp/ui/chat_screen/messaging_screen.dart';
 import 'package:emartapp/ui/screen/bottom_tabbar_screen/profile_edit.dart';
 import 'package:emartapp/ui/screen/login_screen.dart';
+import 'package:emartapp/ui/screen/order_screen/order_screen.dart';
 import 'package:emartapp/widget/details_card.dart';
+import 'package:emartapp/widget/loading_indicator.dart';
+import 'package:emartapp/wishlist_screen/wishlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -17,6 +21,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(ProfileController());
+  //  FireStoreServices.getCounts;
    // print("KulluTag userId ${auth.currentUser!.uid}");
     return Scaffold(
         backgroundColor: Vx.white,
@@ -115,26 +120,38 @@ class AccountScreen extends StatelessWidget {
                           child: 'Log out'.text.white.make()),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        detailsCard(
-                            count:user['cart_count'],
-                            title: 'your cart',
-                            width: context.screenWidth / 3.4),
-                        detailsCard(
-                            count: user['wishlist_count'],
-                            title: 'your wishlist',
-                            width: context.screenWidth / 3.4),
-                        detailsCard(
-                            count: user['order_count'],
-                            title: 'yours orders',
-                            width: context.screenWidth / 3.4),
-                      ],
-                    ),
-                  ),
+
+                    FutureBuilder(
+                        future: FireStoreServices.getCounts(),
+                        builder: (BuildContext context,AsyncSnapshot snapshot){
+                     if(!snapshot.hasData){
+                       return Center(
+                         child: loadingIndicator(),
+                       );
+                     }else{
+                       var countData = snapshot.data;
+                       return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                          detailsCard(
+                          count:countData[0].toString(),
+                          title: 'your cart',
+                          width: context.screenWidth / 3.4),
+                          detailsCard(
+                          count: countData[1].toString(),
+                          title: 'your wishlist',
+                          width: context.screenWidth / 3.4),
+                          detailsCard(
+                          count: countData[2].toString(),
+                          title: 'yours orders',
+                          width: context.screenWidth / 3.4),
+                          ],
+                          );
+                     }
+                    }),
+
+
+
                   20.heightBox,
                   ListView.builder(
                     shrinkWrap: true,
@@ -142,6 +159,16 @@ class AccountScreen extends StatelessWidget {
                     itemCount: profileButtonList.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                        onTap: (){
+                          switch(index){
+                            case 0:Get.to(()=>const OrderScreen());
+                            break;
+                            case 1: Get.to(()=>const WishlistScreen());
+                            break;
+                            case 2: Get.to(()=>const MessagesScreen());
+                            break;
+                          }
+                        },
                          title: profileButtonList[index]
                               .text
                               .fontWeight(FontWeight.bold)

@@ -39,7 +39,7 @@ class ChatsController extends GetxController{
             'last_msg':'',
             'users':{friendId: null,currentId:null},
             'toId':'',
-            'fromId':'f',
+            'fromId':'',
             'friend_name': friendName,
             'sender_name':senderName,
           }).then((value){
