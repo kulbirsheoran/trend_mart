@@ -1,4 +1,5 @@
 import 'package:emartapp/constant/firebase_const.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 //
@@ -16,6 +17,8 @@ class HomeController extends GetxController {
 
   var username = '';
 
+  var searchController = TextEditingController();
+
   getUsername()async{
    var n = await fireStore.collection(userCollection).where('id',isEqualTo:currentUser!.uid ).get().then((value){
       if(value.docs.isNotEmpty){
@@ -25,5 +28,6 @@ class HomeController extends GetxController {
    username = n;
  //print(username);
   }
+
 }
 

@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emartapp/constant/color.dart';
 import 'package:emartapp/constant/list.dart';
 import 'package:emartapp/constant/string.dart';
+import 'package:emartapp/controller/home_controller.dart';
 import 'package:emartapp/service/firestore_service.dart';
 import 'package:emartapp/ui/screen/bottom_tabbar_screen/item_detail.dart';
+import 'package:emartapp/ui/screen/bottom_tabbar_screen/search_screen.dart';
 import 'package:emartapp/widget/featured_button.dart';
 import 'package:emartapp/widget/home_button.dart';
 import 'package:emartapp/widget/loading_indicator.dart';
@@ -17,6 +19,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<HomeController>();
+
     return Container(
       padding: const EdgeInsets.all(8),
       width: double.infinity,
@@ -25,8 +29,14 @@ class HomeScreen extends StatelessWidget {
       child: SafeArea(
         child: Column(children: [
           TextFormField(
-            decoration: const InputDecoration(
-                suffixIcon: Icon(Icons.search),
+            controller: controller.searchController,
+            decoration:  InputDecoration(
+                suffixIcon: Icon(Icons.search).onTap(() {
+                  if(controller.searchController.text.isNotEmptyAndNotNull){
+
+
+                  Get.to(()=>SearchScreen(title: controller.searchController.text,));
+                }}),
                 filled: true,
                 fillColor: Colors.white,
                 hintText: searchanything,

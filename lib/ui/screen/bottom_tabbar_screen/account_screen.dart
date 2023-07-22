@@ -28,6 +28,7 @@ class AccountScreen extends StatelessWidget {
         body: Column(
           children: [
             StreamBuilder(
+              //current useer mail aa rhi h
               stream: FireStoreServices.getUser(auth.currentUser!.uid),
               builder:
                   (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {

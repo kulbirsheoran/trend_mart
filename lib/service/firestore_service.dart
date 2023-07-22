@@ -89,4 +89,7 @@ class FireStoreServices {
    static getFeaturedProducts(){
     return fireStore.collection(productsCollection).where('is_featured',isEqualTo: true).get();
    }
+   static searchProducts(title){
+    return fireStore.collection(productsCollection).get();
+   }
 }
