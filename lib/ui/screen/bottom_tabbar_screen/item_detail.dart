@@ -142,7 +142,8 @@ class ItemDetail extends StatelessWidget {
                             ),
                             Row(
                                 children: List.generate(
-                              user['p_colors'].length,
+                                //  3,
+                             user['p_colors'].length,
                               // 3,
                               (index) => Stack(
                                 alignment: Alignment.center,

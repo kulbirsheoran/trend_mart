@@ -302,15 +302,18 @@ class HomeScreen extends StatelessWidget {
                                   crossAxisSpacing: 8,
                                   mainAxisExtent: 300),
                               itemBuilder: (context, index) {
-                                return Column(
+                                return Column(mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Image.network(
                                       allproduct[index]['p_imgs'][0],
                                       //'assets/images/applephone.jpg',
                                       width: 200,
-                                      height: 200,
-                                      fit: BoxFit.fill,
+                                      height: 252,
+                                      fit: BoxFit.cover,
                                     ),
+                                    5.heightBox,
+                                    5.widthBox,
                                     '${allproduct[index]['p_name']}'.text.make(),
                                     10.heightBox,
                                     Row(

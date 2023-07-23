@@ -76,9 +76,11 @@ class ProfileEdit extends StatelessWidget {
 
   Widget _buildButton(BuildContext context, ProfileController controller) {
     return controller.isLoading.value
-        ? CircularProgressIndicator(
+        ? Center(
+          child: CircularProgressIndicator(
       valueColor: AlwaysStoppedAnimation(redColor),
-    )
+    ),
+        )
         : SizedBox(
       width: context.screenWidth - 50,
       child: Button(

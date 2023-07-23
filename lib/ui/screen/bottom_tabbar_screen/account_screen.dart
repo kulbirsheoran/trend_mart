@@ -110,7 +110,9 @@ class AccountScreen extends StatelessWidget {
 
                           ],
                         ),
-                      ),OutlinedButton(
+                      ),
+                      SizedBox(width: 25),
+                      OutlinedButton(
                           style: OutlinedButton.styleFrom(
                               side: BorderSide(color: Colors.white)),
                           onPressed: () async {

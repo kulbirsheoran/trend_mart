@@ -17,6 +17,9 @@ class CartController extends GetxController {
   var paymentIndex = 0.obs;
   late dynamic productSnapshot;
   var products = [];
+
+  var vendors=[];
+
   var placingOrder = false.obs;
   calculate(data) {
     totalP.value = 0;
@@ -53,12 +56,14 @@ class CartController extends GetxController {
       'order_on_delivery':false,
       'total_amount':totalAmount,
       'orders':FieldValue.arrayUnion(products),
+      'vendors':FieldValue.arrayUnion(vendors),
 
     });
     placingOrder(false);
   }
   getProductDetails(){
     products.clear();
+    vendors.clear();
     for(var i =0; i<productSnapshot.length;i++){
 
       products.add({
@@ -69,7 +74,7 @@ class CartController extends GetxController {
         'qty':productSnapshot[i]['qty'],
         'titel':productSnapshot[i]['titel'],
       });
-
+         vendors.add(productSnapshot[i]['vendor_id']);
     }
     //print('produts');
   }
