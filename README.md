@@ -1,4 +1,4 @@
-# emartapp
+# trend_mart
 
 A new Flutter project.
 
